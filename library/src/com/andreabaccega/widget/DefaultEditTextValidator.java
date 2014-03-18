@@ -49,7 +49,7 @@ public class DefaultEditTextValidator
 	    customFormat = typedArray.getString(R.styleable.FormEditText_customFormat);
 		typedArray.recycle();
 
-		this.editText = editText;
+		setEditText( editText );
 		resetValidators( context );
 
 	}
@@ -275,7 +275,9 @@ public class DefaultEditTextValidator
 
 	public void setEditText( EditText editText )
 	{
-		this.editText.removeTextChangedListener( getTextWatcher() );
+		if (this.editText != null) {
+			this.editText.removeTextChangedListener( getTextWatcher() );
+		}
 		this.editText = editText;
 		editText.addTextChangedListener( getTextWatcher() );
 	}
@@ -310,27 +312,32 @@ public class DefaultEditTextValidator
 		resetValidators( context );
 	}
 
-	/**
-	 * Calling *testValidity()* will cause the EditText to go through customValidators and call
-	 * {@link #Validator.isValid(EditText)}
-	 * 
-	 * @return true if the validity passes false otherwise.
-	 */
+
 	@Override
 	public boolean testValidity()
 	{
-		boolean isValid = mValidator.isValid( editText );
-		if ( !isValid )
-		{
-			if ( mValidator.hasErrorMessage() )
-			{
-				editText.setError( mValidator.getErrorMessage() );
-			}
-		}
-		return isValid; 
+        return testValidity(true);
 	}
 
-	private TextWatcher tw;
+    @Override
+    public boolean testValidity(boolean showUIError) {
+        boolean isValid = mValidator.isValid( editText );
+        if ( !isValid && showUIError)
+        {
+            showUIError();
+        }
+        return isValid;
+    }
+
+    @Override
+    public void showUIError() {
+        if ( mValidator.hasErrorMessage() )
+        {
+            editText.setError( mValidator.getErrorMessage() );
+        }
+    }
+
+    private TextWatcher tw;
 
 	private String defaultEmptyErrorString;
 
