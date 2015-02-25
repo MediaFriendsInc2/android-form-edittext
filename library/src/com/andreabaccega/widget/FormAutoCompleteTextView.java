@@ -10,42 +10,41 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
-import com.andreabaccega.formedittextvalidator.Validator;
-
 /**
- * EditText Extension to be used in order to create forms in android.
+ * AutoCompleteTextView Extension to be used in order to create forms in android.
  *
- * @author Andrea Baccega <me@andreabaccega.com>
+ * @author Said Tahsin Dane <tasomaniac@gmail.com>
  */
-public class FormEditText extends EditText {
-    public FormEditText(Context context) {
+public class FormAutoCompleteTextView extends AutoCompleteTextView {
+    public FormAutoCompleteTextView(Context context) {
         super(context);
-        //support dynamic new FormEditText(context)
-        editTextValidator = new DefaultEditTextValidator(this, context);
+        // FIXME how should this constructor be handled
+        throw new RuntimeException("Not supported");
     }
 
-    public FormEditText(Context context, AttributeSet attrs) {
+    public FormAutoCompleteTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         editTextValidator = new DefaultEditTextValidator(this, attrs, context);
     }
 
-    public FormEditText(Context context, AttributeSet attrs, int defStyle) {
+    public FormAutoCompleteTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         editTextValidator = new DefaultEditTextValidator(this, attrs, context);
 
     }
 
     /**
-     * Add a validator to this FormEditText. The validator will be added in the
+     * Add a validator to this AutoCompleteTextView. The validator will be added in the
      * queue of the current validators.
      *
      * @param theValidator
      * @throws IllegalArgumentException
      *             if the validator is null
      */
-    public void addValidator(Validator theValidator) throws IllegalArgumentException {
+    public void addValidator(com.andreabaccega.formedittextvalidator.Validator theValidator) throws IllegalArgumentException {
         editTextValidator.addValidator(theValidator);
     }
 
@@ -58,7 +57,7 @@ public class FormEditText extends EditText {
     }
 
     /**
-     * Calling *testValidity()* will cause the EditText to go through
+     * Calling *testValidity()* will cause the AutoCompleteTextView to go through
      * customValidators and call {@link com.andreabaccega.formedittextvalidator.Validator#isValid(EditText)}
      *
      * @return true if the validity passes false otherwise.
